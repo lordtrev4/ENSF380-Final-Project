@@ -2,5 +2,6 @@
 
 Things to do left:
 
-DisasterVictimTest for DietaryRestrictions / verifyGender
+DisasterVictimTest for DietaryRestrictions / VerifyGender
 DisasterVictimInterface
+InquiryQueriesInterface + InquiryLog
