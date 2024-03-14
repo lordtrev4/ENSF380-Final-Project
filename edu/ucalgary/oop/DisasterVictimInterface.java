@@ -62,4 +62,5 @@ public class DisasterVictim implements DisasterVictimInterface {
     public void updateFamilyConnections(ArrayList<FamilyRelation> relation) {
         this.familyConnections = relation;
     }
+
 }

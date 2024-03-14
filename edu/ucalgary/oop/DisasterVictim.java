@@ -1,6 +1,10 @@
 package edu.ucalgary.oop;
 
 import java.util.EnumSet;
+import java.util.List;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 
@@ -17,6 +21,7 @@ public class DisasterVictim {
     private EnumSet<DietaryRestrictions> dietaryRestrictions;
     private final String ENTRY_DATE;
     private String gender;
+    private List<String> validGenders;
     private String comments;
 
     public DisasterVictim(String firstName, String ENTRY_DATE) {
@@ -27,6 +32,12 @@ public class DisasterVictim {
         this.ENTRY_DATE = ENTRY_DATE;
         this.ASSIGNED_SOCIAL_ID = generateSocialID();
         this.dietaryRestrictions = EnumSet.noneOf(DietaryRestrictions.class);
+            validGenders = new ArrayList<>();
+        try {
+            validGenders = Files.readAllLines(Paths.get("GenderOptions.,txt"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         
     }
 
@@ -179,8 +190,8 @@ public class DisasterVictim {
     }
 
     public void setGender(String gender) {
-        if (!gender.matches("(?i)^(man|woman|boy|gender queer|girl|non-binary|two-spirit)$")) {
-            throw new IllegalArgumentException("Invalid gender. Acceptable values are: boy, gender queer, girl, man, non-binary, two-spirit or woman.");
+        if (!validGenders.contains(gender.toLowerCase())) {
+            throw new IllegalArgumentException("Invalid gender. Acceptable values are: " + String.join(", ", validGenders));
         }
         this.gender = gender.toLowerCase(); // Store in a consistent format
     }

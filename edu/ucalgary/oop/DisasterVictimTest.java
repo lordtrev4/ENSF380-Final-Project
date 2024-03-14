@@ -10,6 +10,9 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import java.util.List;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
@@ -98,7 +101,7 @@ public class DisasterVictimTest {
         // Tests can be run in any order so two victims will be created
         DisasterVictim newVictim = new DisasterVictim("Kash", "2024-01-21");
         int expectedSocialId = newVictim.getAssignedSocialID() + 1;
-        DisasterVictim actualVictim = new DisasterVictim("Adeleke", "2024-01-22");
+        DisasterVictim actualVictim = new DisasterVictim("Jason", "2024-01-22");
 
         assertEquals("getAssignedSocialID should return the expected social ID", expectedSocialId, actualVictim.getAssignedSocialID());
     }
@@ -113,6 +116,16 @@ public class DisasterVictimTest {
         String newGender = "man";
         victim.setGender(newGender);
         assertEquals("setGender should update and getGender should return the new gender from gender options", newGender.toLowerCase(), victim.getGender());
+    }
+
+    @Test
+    public void testGenderSetMatchesFile() throws IOException {
+        String genderFromFile = new String(Files.readAllBytes(Paths.get("GenderOptions.txt"))).trim();
+
+        DisasterVictim person = new DisasterVictim("Sam");
+        person.setGender(genderFromFile);
+
+        assertEquals(genderFromFile, person.getGender(), "Gender set doesn't match the gender from the file");
     }
 
     @Test
@@ -292,6 +305,28 @@ public void testSetPersonalBelongings() {
         assertEquals("setDietaryRestrictions should correctly set the dietary restrictions", restrictions, victim.getDietaryRestrictions());
     }
 
+    @Test
+    public void testTwoSidedRelationship() {
+        DisasterVictim sam = new DisasterVictim("Sam");
+        DisasterVictim peace = new DisasterVictim("Peace");
+
+        sam.addRelationshipTo(peace);
+
+        assertTrue(sam.getRelationships().contains(peace));
+        assertTrue(peace.getRelationships().contains(sam));
+    }
+
+    @Test
+    public void testNoDuplicateRelationships() {
+        DisasterVictim sam = new DisasterVictim("Sam");
+        DisasterVictim peace = new DisasterVictim("Peace");
+
+        sam.addRelationshipTo(peace);
+        sam.addRelationshipTo(peace);
+
+        assertEquals(1, sam.getRelationships().size());
+        assertEquals(1, peace.getRelationships().size());
+    }
     
 }
 
