@@ -1,3 +1,6 @@
 # ENSF380-Final-Project
 
-Final project with changes to the code solutions.
+Things to do left:
+
+DisasterVictimTest for DietaryRestrictions / verifyGender
+DisasterVictimInterface

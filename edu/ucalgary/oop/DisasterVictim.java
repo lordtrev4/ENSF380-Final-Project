@@ -2,6 +2,7 @@ package edu.ucalgary.oop;
 
 import java.util.List;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.ArrayList;
 import java.time.LocalDate;
 
@@ -15,7 +16,8 @@ public class DisasterVictim {
     private final int ASSIGNED_SOCIAL_ID;
     private ArrayList<FamilyRelation> familyConnections = new ArrayList<>();
     private ArrayList<MedicalRecord> medicalRecords = new ArrayList<>();
-    private Supply[] personalBelongings;
+    private ArrayList<Supply> personalBelongings;
+    private EnumSet<DietaryRestrictions> dietaryRestrictions;
     private final String ENTRY_DATE;
     private String gender;
     private String comments;
@@ -27,6 +29,7 @@ public class DisasterVictim {
         }
         this.ENTRY_DATE = ENTRY_DATE;
         this.ASSIGNED_SOCIAL_ID = generateSocialID();
+        this.dietaryRestrictions = EnumSet.noneOf(DietaryRestrictions.class);
         
     }
 
@@ -74,77 +77,78 @@ public class DisasterVictim {
         return ASSIGNED_SOCIAL_ID;
     }
 
-  public FamilyRelation[] getFamilyConnections() {
-        return familyConnections.toArray(new FamilyRelation[0]);
+  public ArrayList<FamilyRelation> getFamilyConnections() {
+        return familyConnections;
     }
 
-    public MedicalRecord[] getMedicalRecords() {
-        return medicalRecords.toArray(new MedicalRecord[0]);
+    public ArrayList<MedicalRecord> getMedicalRecords() {
+        return medicalRecords;
     }
 
-    public Supply[] getPersonalBelongings() {
+    public ArrayList<Supply> getPersonalBelongings() {
         return this.personalBelongings;
     }
 
     // The add and remove methods remain correct.
     
     // Correct the setters to accept Lists instead of arrays
-    public void setFamilyConnections(FamilyRelation[] connections) {
+    public void setFamilyConnections(ArrayList<FamilyRelation> connections) {
         this.familyConnections.clear();
         for (FamilyRelation newRecord : connections) {
             addFamilyConnection(newRecord);
         }
     }
 
-    public void setMedicalRecords(MedicalRecord[] records) {
+    public void setMedicalRecords(ArrayList<MedicalRecord> records) {
         this.medicalRecords.clear();
         for (MedicalRecord newRecord : records) {
             addMedicalRecord(newRecord);
         }
     }
 
-    public void setPersonalBelongings(Supply[] belongings) {
+    public void setPersonalBelongings(ArrayList<Supply> belongings) {
         this.personalBelongings = belongings;
     }
 
     // Add a Supply to personalBelonging
     public void addPersonalBelonging(Supply supply) {
-
         if (this.personalBelongings == null) {
-            Supply tmpSupply[] = { supply };
-            this.setPersonalBelongings(tmpSupply);
-            return;
+            this.personalBelongings = new ArrayList<>();
         }
-
-        // Create an array one larger than the previous array
-        int newLength = this.personalBelongings.length + 1;
-        Supply tmpPersonalBelongings[] = new Supply[newLength];
-
-        // Copy all the items in the current array to the new array
-        int i;
-        for (i=0; i < personalBelongings.length; i++) {
-            tmpPersonalBelongings[i] = this.personalBelongings[i];
-        }
-
-        // Add the new element at the end of the new array
-        tmpPersonalBelongings[i] = supply;
-
-        // Replace the original array with the new array
-        this.personalBelongings = tmpPersonalBelongings;
+        this.personalBelongings.add(supply);
     }
+        // if (this.personalBelongings == null) {
+        //     Supply tmpSupply[] = { supply };
+        //     this.setPersonalBelongings(tmpSupply);
+        //     return;
+        // }
+
+        // // Create an array one larger than the previous array
+        // int newLength = this.personalBelongings.length + 1;
+        // Supply tmpPersonalBelongings[] = new Supply[newLength];
+
+        // // Copy all the items in the current array to the new array
+        // int i;
+        // for (i=0; i < personalBelongings.length; i++) {
+        //     tmpPersonalBelongings[i] = this.personalBelongings[i];
+        // }
+
+        // // Add the new element at the end of the new array
+        // tmpPersonalBelongings[i] = supply;
+
+        // // Replace the original array with the new array
+        // this.personalBelongings = tmpPersonalBelongings;
+    // }
 
     // Remove a Supply from personalBelongings, we assume it only appears once
     public void removePersonalBelonging(Supply unwantedSupply) {
-        Supply[] updatedBelongings = new Supply[personalBelongings.length-1];
-        int index = 0;
-        int newIndex = index;
+        ArrayList<Supply> updatedBelongings = new ArrayList<>();
         for (Supply supply : personalBelongings) {
             if (!supply.equals(unwantedSupply)) {
-                updatedBelongings[newIndex] = supply;
-                newIndex++;
+                updatedBelongings.add(supply);
             }
-            index++;
         }
+        this.personalBelongings = updatedBelongings;
     }
 
     public void removeFamilyConnection(FamilyRelation exRelation) {
@@ -178,12 +182,22 @@ public class DisasterVictim {
     }
 
     public void setGender(String gender) {
-        if (!gender.matches("(?i)^(male|female|other)$")) {
-            throw new IllegalArgumentException("Invalid gender. Acceptable values are male, female, or other.");
+        if (!gender.matches("(?i)^(man|woman|boy|gender queer|girl|non-binary|two-spirit)$")) {
+            throw new IllegalArgumentException("Invalid gender. Acceptable values are: boy, gender queer, girl, man, non-binary, two-spirit or woman.");
         }
         this.gender = gender.toLowerCase(); // Store in a consistent format
     }
 
+    public EnumSet<DietaryRestrictions> getDietaryRestrictions() {
+        return this.dietaryRestrictions;
+    }
+
+    public void setDietaryRestrictions(EnumSet<DietaryRestrictions> restrictions) {
+        this.dietaryRestrictions.clear();
+        for (DietaryRestrictions restriction : restrictions) {
+            this.dietaryRestrictions.add(restriction);
+        }
+    }
    
 }
 
