@@ -1,10 +1,7 @@
 package edu.ucalgary.oop;
 
-import java.util.List;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.ArrayList;
-import java.time.LocalDate;
 
 
 public class DisasterVictim {
