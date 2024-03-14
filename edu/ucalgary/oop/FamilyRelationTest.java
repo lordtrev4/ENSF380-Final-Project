@@ -41,5 +41,27 @@ public class FamilyRelationTest {
         testFamilyRelationObject.setRelationshipTo(newRelationship);
         assertEquals("setRelationshipTo should update the relationship", newRelationship, testFamilyRelationObject.getRelationshipTo());
     }
+    
+    @Test
+    public void testTwoSidedRelationship() {
+        DisasterVictim sam = new DisasterVictim("Sam");
+        DisasterVictim peace = new DisasterVictim("Peace");
 
+        sam.setRelationshipTo(peace);
+
+        assertTrue(sam.getRelationships().contains(peace));
+        assertTrue(peace.getRelationships().contains(sam));
+    }
+
+    @Test
+    public void testNoDuplicateRelationships() {
+        DisasterVictim sam = new DisasterVictim("Sam");
+        DisasterVictim peace = new DisasterVictim("Peace");
+
+        sam.addRelationshipTo(peace);
+        sam.addRelationshipTo(peace);
+
+        assertEquals(1, sam.getRelationships().size());
+        assertEquals(1, peace.getRelationships().size());
+    }
 }

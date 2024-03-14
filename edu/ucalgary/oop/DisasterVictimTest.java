@@ -119,7 +119,7 @@ public class DisasterVictimTest {
     }
 
     @Test
-    public void testGenderSetMatchesFile() throws IOException {
+    public void testGenderMatchesFile() throws IOException {
         String genderFromFile = new String(Files.readAllBytes(Paths.get("GenderOptions.txt"))).trim();
 
         DisasterVictim person = new DisasterVictim("Sam");
@@ -303,29 +303,6 @@ public void testSetPersonalBelongings() {
         }
         assertTrue("setDietaryRestrictions should correctly update dietary restrictions", correct);
         assertEquals("setDietaryRestrictions should correctly set the dietary restrictions", restrictions, victim.getDietaryRestrictions());
-    }
-
-    @Test
-    public void testTwoSidedRelationship() {
-        DisasterVictim sam = new DisasterVictim("Sam");
-        DisasterVictim peace = new DisasterVictim("Peace");
-
-        sam.addRelationshipTo(peace);
-
-        assertTrue(sam.getRelationships().contains(peace));
-        assertTrue(peace.getRelationships().contains(sam));
-    }
-
-    @Test
-    public void testNoDuplicateRelationships() {
-        DisasterVictim sam = new DisasterVictim("Sam");
-        DisasterVictim peace = new DisasterVictim("Peace");
-
-        sam.addRelationshipTo(peace);
-        sam.addRelationshipTo(peace);
-
-        assertEquals(1, sam.getRelationships().size());
-        assertEquals(1, peace.getRelationships().size());
     }
     
 }

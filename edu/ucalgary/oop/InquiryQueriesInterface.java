@@ -34,7 +34,11 @@ public class Inquirer implements InquiryQueriesInterface {
 
     @Override
     public void setTypeReliefWorker(String workerType) {
+        if (!workerType.equals("central") && !workerType.equals("location")) {
+            throw new IllegalArgumentException("Worker type must be either 'central' or 'location'");
+        }
         this.workerType = workerType;
-        // Add code here to set the type of the relief worker
     }
+
+    
 }

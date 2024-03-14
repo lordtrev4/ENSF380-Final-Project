@@ -1,5 +1,6 @@
 package edu.ucalgary.oop;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 import java.util.List;
 
@@ -29,15 +30,21 @@ public class InquiryQueriesInterfaceTest {
         assertEquals("Sam", victims.get(0).getFirstName());
     }
 
-    @Test
+        @Test
     public void testSetTypeReliefWorker() {
-        Inquirer inquirer = new Inquirer();
-        inquirer.setTypeReliefWorker("central");
+        InquiryQueriesInterface worker = new InquiryQueriesInterface();
 
-        // Assuming you have a getter for workerType
-        assertEquals("central", inquirer.getWorkerType());
+        // Test setting the worker type to "central"
+        worker.setTypeReliefWorker("central");
+        assertEquals("central", worker.getWorkerType());
 
-        inquirer.setTypeReliefWorker("location");
-        assertEquals("location", inquirer.getWorkerType());
+        // Test setting the worker type to "location"
+        worker.setTypeReliefWorker("location");
+        assertEquals("location", worker.getWorkerType());
+
+        // Test setting the worker type to an invalid value
+        assertThrows(IllegalArgumentException.class, () -> {
+            worker.setTypeReliefWorker("invalid");
+        });
     }
 }
